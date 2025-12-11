@@ -10,9 +10,7 @@ spec:
   strategy:
     blueGreen:
       activeService: kube-app-svc
-      previewService: kube-app-preview-svc     # ADDED
-      autoPromotionEnabled: false              # SAME
-      scaleDownDelaySeconds: 0                 # ADDED (no auto scale-down)
+      autoPromotionEnabled: false
   selector:
     matchLabels:
       app: kube-app
@@ -20,7 +18,6 @@ spec:
     metadata:
       labels:
         app: kube-app
-        role: preview  
     spec:
       serviceAccountName: kube-stag-pvt-cluster-wl-id
       containers:
@@ -48,5 +45,4 @@ spec:
           successThreshold: 1
           timeoutSeconds: 5
         imagePullPolicy: Always
-
 

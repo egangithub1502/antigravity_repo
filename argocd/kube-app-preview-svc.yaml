@@ -22,6 +22,5 @@ spec:
     protocol: TCP
   selector:
     app: kube-app
-    role: preview          # <<< UPDATED FOR GREEN PODS
 
 
