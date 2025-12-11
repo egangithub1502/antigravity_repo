@@ -6,13 +6,11 @@ metadata:
   labels:
     app: kube-app
   annotations:
-    # Matching annotations from active service
     cloud.google.com/backend-config: '{"ports": {"http":"apple-backend-config"}}'
     cloud.google.com/load-balancer-type: Internal
     cloud.google.com/neg: '{"ingress": true}'
 spec:
   type: LoadBalancer
-  # Omitting loadBalancerIP to allow dynamic IP assignment for preview
   loadBalancerSourceRanges:
   - 10.112.0.0/14
   - 10.116.0.0/20
@@ -24,3 +22,5 @@ spec:
     protocol: TCP
   selector:
     app: kube-app
+    role: preview          # <<< UPDATED FOR GREEN PODS
+
