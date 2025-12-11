@@ -1,18 +1,14 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: apple-app-deployment
+  name: apple-app-statefulset
   namespace: apple
   labels:
     app: kube-app
 spec:
-  replicas: 3
+  replicas: 6
   minReadySeconds: 10
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 100%
+  serviceName: kube-app-svc
   selector:
     matchLabels:
       app: kube-app
@@ -24,7 +20,7 @@ spec:
       serviceAccountName: kube-stag-pvt-cluster-wl-id
       containers:
       - name: kubeappcontainer
-        image: us-central1-docker.pkg.dev/stm-01/my-app-repo/my-app:latest
+        image: us-central1-docker.pkg.dev/stm-01/my-app-repo/html-nginx-app:latest
         ports:
         - containerPort: 80
           protocol: TCP
@@ -47,3 +43,7 @@ spec:
           successThreshold: 1
           timeoutSeconds: 5
         imagePullPolicy: Always
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 3
