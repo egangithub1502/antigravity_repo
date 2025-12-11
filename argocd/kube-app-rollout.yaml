@@ -13,6 +13,12 @@ spec:
       activeService: kube-app-svc
       previewService: kube-app-preview-svc
       autoPromotionEnabled: false
+      postPromotionAnalysis:
+        templates:
+        - templateName: http-analysis
+        args:
+        - name: service-name
+          value: kube-app-svc
   selector:
     matchLabels:
       app: kube-app

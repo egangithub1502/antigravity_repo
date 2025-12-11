@@ -13,6 +13,12 @@ spec:
       activeService: kube-bg-svc
       previewService: kube-bg-preview-svc
       autoPromotionEnabled: false
+      postPromotionAnalysis:
+        templates:
+        - templateName: http-analysis
+        args:
+        - name: service-name
+          value: kube-bg-svc
   selector:
     matchLabels:
       app: kube-bg

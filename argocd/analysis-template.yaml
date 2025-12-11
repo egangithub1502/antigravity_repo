@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: http-analysis
+  namespace: apple
+spec:
+  args:
+  - name: service-name
+  metrics:
+  - name: http-check
+    interval: 10s
+    successCondition: result[0] == '200'
+    provider:
+      web:
+        url: "http://{{args.service-name}}"
+        timeout: 10s
