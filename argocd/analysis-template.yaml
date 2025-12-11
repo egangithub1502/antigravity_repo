@@ -9,6 +9,7 @@ spec:
   metrics:
   - name: http-check
     interval: 10s
+    count: 3
     successCondition: result[0] == '200'
     provider:
       web:
