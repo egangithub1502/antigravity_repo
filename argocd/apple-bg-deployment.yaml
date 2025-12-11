@@ -1,36 +1,30 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: apple-app-rollout
+  name: apple-bg-deployment
   namespace: apple
   labels:
-    app: kube-app
+    app: kube-bg
 spec:
   replicas: 3
   minReadySeconds: 10
   strategy:
-    blueGreen:
-      activeService: kube-app-svc
-      previewService: kube-app-preview-svc
-      autoPromotionEnabled: false
-      postPromotionAnalysis:
-        templates:
-        - templateName: http-analysis
-        args:
-        - name: service-name
-          value: kube-app-svc
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
-      app: kube-app
+      app: kube-bg
   template:
     metadata:
       labels:
-        app: kube-app
+        app: kube-bg
     spec:
       serviceAccountName: kube-stag-pvt-cluster-wl-id
       containers:
-      - name: kubeappcontainer
-        image: us-central1-docker.pkg.dev/stm-01/my-app-repo/html-nginx-app:latest
+      - name: kubebgcontainer
+        image: us-central1-docker.pkg.dev/stm-01/my-app-repo/my-app:latest
         ports:
         - containerPort: 80
           protocol: TCP
