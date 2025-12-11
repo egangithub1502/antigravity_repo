@@ -20,7 +20,6 @@ spec:
     metadata:
       labels:
         app: kube-app
-        role: blue
     spec:
       serviceAccountName: kube-stag-pvt-cluster-wl-id
       containers:
