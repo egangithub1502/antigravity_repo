@@ -20,7 +20,7 @@ spec:
     metadata:
       labels:
         app: kube-app
-        role: active  
+        role: preview  
     spec:
       serviceAccountName: kube-stag-pvt-cluster-wl-id
       containers:
