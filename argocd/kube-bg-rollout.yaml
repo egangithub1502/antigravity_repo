@@ -7,10 +7,12 @@ metadata:
     app: kube-bg
 spec:
   replicas: 3
+  minReadySeconds: 10
   strategy:
     blueGreen:
       activeService: kube-bg-svc
-      autoPromotionEnabled: false 
+      previewService: kube-bg-preview-svc
+      autoPromotionEnabled: false
   selector:
     matchLabels:
       app: kube-bg
@@ -22,7 +24,7 @@ spec:
       serviceAccountName: kube-stag-pvt-cluster-wl-id
       containers:
       - name: kubebgcontainer
-        image: us-central1-docker.pkg.dev/stm-01/my-app-repo/html-nginx-app:latest
+        image: us-central1-docker.pkg.dev/stm-01/my-app-repo/my-app:latest
         ports:
         - containerPort: 80
           protocol: TCP
@@ -40,7 +42,7 @@ spec:
             path: /
             port: 80
             scheme: HTTP
-          initialDelaySeconds: 120
+          initialDelaySeconds: 30
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 5
