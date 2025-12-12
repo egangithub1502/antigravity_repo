@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: apple-app
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/egangithub1502/antigravity_repo.git
+    targetRevision: main   # Important: change to your actual branch name
+    path: argocd           # Correct folder
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apple
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+

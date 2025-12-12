@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: apple-app-statefulset
+  namespace: apple
+  labels:
+    app: kube-app
+spec:
+  replicas: 3
+  minReadySeconds: 10
+  serviceName: kube-app-svc
+  selector:
+    matchLabels:
+      app: kube-app
+  template:
+    metadata:
+      labels:
+        app: kube-app
+    spec:
+      serviceAccountName: kube-stag-pvt-cluster-wl-id
+      containers:
+      - name: kubeappcontainer
+        image: us-central1-docker.pkg.dev/stm-01/my-app-repo/my-tomcat-app:latest
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        imagePullPolicy: Always
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      #partition: 3
