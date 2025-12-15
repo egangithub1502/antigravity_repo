@@ -8,15 +8,20 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/egangithub1502/antigravity_repo.git 
-    targetRevision: HEAD
-    path: .
+    repoURL: https://github.com/egangithub1502/antigravity_repo.git
+    targetRevision: main   # Important: change to your actual branch name
+    path: argocd-deployment           # Correct folder
   destination:
     server: https://kubernetes.default.svc
     namespace: apple
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+    retry:
+      limit: 3
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
     syncOptions:
     - CreateNamespace=true
+    - Timeout=600
+

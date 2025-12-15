@@ -1,14 +1,15 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: apple-app-statefulset
+  name: apple-app-deployment
   namespace: apple
   labels:
     app: kube-app
 spec:
   replicas: 3
   minReadySeconds: 10
-  serviceName: kube-app-svc
+  strategy:
+    type: OnDelete
   selector:
     matchLabels:
       app: kube-app
@@ -16,6 +17,7 @@ spec:
     metadata:
       labels:
         app: kube-app
+        version: v2
     spec:
       serviceAccountName: kube-stag-pvt-cluster-wl-id
       containers:
@@ -43,7 +45,3 @@ spec:
           successThreshold: 1
           timeoutSeconds: 5
         imagePullPolicy: Always
-  updateStrategy:
-    type: RollingUpdate
-    rollingUpdate:
-      #partition: 3

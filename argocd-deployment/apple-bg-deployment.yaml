@@ -1,14 +1,15 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: apple-bg-statefulset
+  name: apple-bg-deployment
   namespace: apple
   labels:
     app: kube-bg
 spec:
   replicas: 3
   minReadySeconds: 10
-  serviceName: kube-bg-svc
+  strategy:
+    type: OnDelete
   selector:
     matchLabels:
       app: kube-bg
@@ -16,11 +17,12 @@ spec:
     metadata:
       labels:
         app: kube-bg
+        version: v2
     spec:
       serviceAccountName: kube-stag-pvt-cluster-wl-id
       containers:
       - name: kubebgcontainer
-        image: us-central1-docker.pkg.dev/stm-01/my-app-repo/html-nginx-app:latest
+        image: us-central1-docker.pkg.dev/stm-01/my-app-repo/my-app:latest
         ports:
         - containerPort: 80
           protocol: TCP
@@ -43,7 +45,3 @@ spec:
           successThreshold: 1
           timeoutSeconds: 5
         imagePullPolicy: Always
-  updateStrategy:
-    type: RollingUpdate
-    rollingUpdate:
-      partition: 0
