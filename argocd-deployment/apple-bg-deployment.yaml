@@ -9,7 +9,10 @@ spec:
   replicas: 3
   minReadySeconds: 10
   strategy:
-    type: OnDelete
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 100%
   selector:
     matchLabels:
       app: kube-bg
@@ -45,3 +48,4 @@ spec:
           successThreshold: 1
           timeoutSeconds: 5
         imagePullPolicy: Always
+
