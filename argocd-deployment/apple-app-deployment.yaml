@@ -20,12 +20,12 @@ spec:
     metadata:
       labels:
         app: kube-app
-        version: v2
+        version: v3
     spec:
       serviceAccountName: kube-stag-pvt-cluster-wl-id
       containers:
       - name: kubeappcontainer
-        image: us-central1-docker.pkg.dev/stm-01/my-app-repo/my-app:latest
+        image: us-central1-docker.pkg.dev/stm-01/my-app-repo/my-tomcat-app:latest
         ports:
         - containerPort: 80
           protocol: TCP
